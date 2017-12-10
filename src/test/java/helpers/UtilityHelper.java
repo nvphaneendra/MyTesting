@@ -1,0 +1,23 @@
+package helpers;
+
+public class UtilityHelper {
+	
+public static CharSequence epoch;
+	
+	public static String email(){
+				
+		long epoch = System.currentTimeMillis();
+		System.out.println(epoch);
+		return "phani"+epoch+"@gmail.com";
+		
+	}
+	
+	public static String uName() {
+		
+		long name = System.currentTimeMillis();
+		System.out.println(name);
+		return "User"+name;		
+		
+	}
+
+}
