@@ -1,15 +1,12 @@
 package stepUtil;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-
 import java.io.FileNotFoundException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import helpers.Constents;
 import helpers.UtilityHelper;
@@ -18,11 +15,14 @@ public class DeltaxTest extends BaseClass{
 	
 private static final Logger logger = Logger.getLogger(DeltaxTest.class);
 	
+	SoftAssert sa = new SoftAssert();
 	@Test	
 	public void Test() throws FileNotFoundException {
 		
 		String a = UtilityHelper.email();
 		String b = UtilityHelper.uName();
+		
+		logger.info("Test Execution is started.");
 		
 		// Enter first name
 		WebElement fName1 = driver.findElement(By.name(Constents.fName));
@@ -37,12 +37,9 @@ private static final Logger logger = Logger.getLogger(DeltaxTest.class);
 		sc.selectByVisibleText("Engineering");
 		
 		// Enter username
-//		WebElement uName = driver.findElement(By.name(Constents.uName));
-//		uName.sendKeys(b);
-		WebElement expected = driver.findElement(By.xpath("*//[id='contact_form']/fieldset/div[4]/div/small[2]"));
-		String str = expected.getText();
-		Assert.assertEquals("Please enter your Username", str);
-		
+		WebElement uName = driver.findElement(By.name(Constents.uName));
+		uName.sendKeys(b);
+				
 		// Enter password
 		WebElement passW = driver.findElement(By.name(Constents.pass));
 		passW.sendKeys(prop.getProperty("Password"));
@@ -62,6 +59,15 @@ private static final Logger logger = Logger.getLogger(DeltaxTest.class);
 		// Click on Submit button
 		WebElement sub = driver.findElement(By.xpath(Constents.sButton));
 		sub.click();
+		
+		logger.info("Checking assert conditions");
+		boolean expect = driver.getPageSource().contains("Please enter your Username");
+		sa.assertEquals(true, expect);
+		
+		boolean expect1 = driver.getPageSource().contains("Please enter your Password");
+		sa.assertEquals(true, expect1);
+		
+		sa.assertAll();
 		
 	}	
 }
